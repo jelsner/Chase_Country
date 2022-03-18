@@ -22,7 +22,7 @@ Tornado start locations
 ```{r}
 Torn.sf <- sf::st_read(dsn = here::here("data", "1950-2020-torn-initpoint"), 
                        layer = "1950-2020-torn-initpoint") |>
-  dplyr::filter(mag >= 1, mo %in% 1:12) |>
+  dplyr::filter(mag >= 1, mo %in% 5:7) |>
   dplyr::mutate(Date = as.Date(date),
                 DateTime = as.POSIXct(paste(yr, mo, dy, time), 
                                       format = "%Y%m%d%H:%M:%S"),
@@ -62,12 +62,21 @@ Elev6.r <- terra::rast(here::here("data", "J14", "N38W100.hgt"))
 Elev7.r <- terra::rast(here::here("data", "J14", "N36W101.hgt"))
 Elev8.r <- terra::rast(here::here("data", "J14", "N37W101.hgt"))
 Elev9.r <- terra::rast(here::here("data", "J14", "N38W101.hgt"))
+Elev10.r <- terra::rast(here::here("data", "J14", "N36W102.hgt"))
+Elev11.r <- terra::rast(here::here("data", "J14", "N37W102.hgt"))
+Elev12.r <- terra::rast(here::here("data", "J14", "N38W102.hgt"))
+Elev13.r <- terra::rast(here::here("data", "J14", "N39W099.hgt"))
+Elev14.r <- terra::rast(here::here("data", "J14", "N39W100.hgt"))
+Elev15.r <- terra::rast(here::here("data", "J14", "N39W101.hgt"))
+Elev16.r <- terra::rast(here::here("data", "J14", "N39W102.hgt"))
 
-
-Elev.m <- terra::mosaic(Elev1.r, Elev2.r, Elev3.r, 
-                        Elev4.r, Elev5.r, Elev6.r,
-                        Elev7.r, Elev8.r, Elev9.r)
+Elev.m <- terra::mosaic(Elev1.r, Elev2.r, Elev3.r, Elev4.r,
+                        Elev5.r, Elev6.r, Elev7.r, Elev8.r,
+                        Elev9.r, Elev10.r, Elev11.r, Elev12.r,
+                        Elev13.r, Elev14.r, Elev15.r, Elev16.r)
 ```
+
+The tornado genesis - roughness relationship diminishes as the domain expands beyond west-central KS.
 
 ```{r}
 library(tmap)
@@ -171,7 +180,7 @@ model1 <- glm(Location ~ Population + Elevation + Roughness,
               family = "binomial", data = TornBack.df)
 summary(model1)
 
-model2 <- glm(Location ~ Elevation + Roughness,
+model2 <- glm(Location ~ Roughness,
               family = "binomial", data = TornBack.df)
 summary(model2)
 
